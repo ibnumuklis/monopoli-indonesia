@@ -1,0 +1,30 @@
+{
+  "name": "monopoli-indonesia",
+  "version": "2.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Monopoli Indonesia \u2014 game board strategy multiplayer online berbasis web (server-authoritative)",
+  "scripts": {
+    "start": "node server/src/index.js",
+    "dev:server": "node --watch server/src/index.js",
+    "dev:client": "npm --prefix client run dev",
+    "build": "npm --prefix client run build",
+    "migrate": "node server/src/db/migrate.js",
+    "test": "node --test --test-concurrency=1 server/test/*.test.js",
+    "test:unit": "node --test server/test/engine.test.js server/test/bot.sim.test.js",
+    "test:e2e": "python3 scripts/e2e.py",
+    "postinstall": "npm --prefix client install"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "@electric-sql/pglite": "^0.5.16",
+    "express": "^4.22.3",
+    "pg": "^8.23.1",
+    "socket.io": "^4.8.4"
+  },
+  "devDependencies": {
+    "socket.io-client": "^4.8.4"
+  }
+}

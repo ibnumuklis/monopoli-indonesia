@@ -1,0 +1,6 @@
+.admin .sidenav { width: 240px; }
+.app-shell.admin { grid-template-columns: 250px 1fr; }
+.admin .navbtn { font-size: 14px; padding: 9px 12px; }
+.admin .table td, .admin .table th { white-space: nowrap; }
+.admin .table td.small, .admin .table td.tiny { white-space: normal; }
+@media (max-width: 860px) { .app-shell.admin { grid-template-columns: minmax(0, 1fr); } }

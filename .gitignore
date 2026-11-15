@@ -1,0 +1,8 @@
+node_modules/
+client/node_modules/
+client/dist/
+.data/
+.env
+client/.env
+e2e-shots/
+*.log

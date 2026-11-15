@@ -1,0 +1,25 @@
+# Blueprint Render.com: server game (WebSocket) + database. Frontend dapat disajikan dari server ini juga,
+# atau dideploy terpisah ke Vercel (lihat client/vercel.json dan docs/DEPLOYMENT.md).
+services:
+  - type: web
+    name: monopoli-indonesia
+    runtime: docker
+    plan: starter
+    healthCheckPath: /health
+    envVars:
+      - key: DATABASE_URL
+        sync: false   # isi dengan connection string Supabase atau gunakan database Render
+      - key: ADMIN_USERNAME
+        value: superadmin
+      - key: ADMIN_PASSWORD
+        sync: false
+      - key: ALLOWED_ORIGINS
+        sync: false
+      - key: TRUST_PROXY
+        value: "1"
+      - key: SUPABASE_URL
+        sync: false
+      - key: SUPABASE_ANON_KEY
+        sync: false
+      - key: SUPABASE_JWT_SECRET
+        sync: false

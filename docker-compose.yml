@@ -1,0 +1,22 @@
+# Menjalankan seluruh stack secara lokal/produksi sederhana: PostgreSQL + server game (+ klien).
+services:
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: monopoli
+      POSTGRES_PASSWORD: monopoli
+      POSTGRES_DB: monopoli
+    volumes: [dbdata:/var/lib/postgresql/data]
+    healthcheck: { test: ["CMD-SHELL", "pg_isready -U monopoli"], interval: 5s, retries: 10 }
+  app:
+    build: .
+    depends_on: { db: { condition: service_healthy } }
+    environment:
+      DATABASE_URL: postgres://monopoli:monopoli@db:5432/monopoli
+      ADMIN_USERNAME: ${ADMIN_USERNAME:-superadmin}
+      ADMIN_PASSWORD: ${ADMIN_PASSWORD:?Set ADMIN_PASSWORD}
+      TRUST_PROXY: "1"
+    ports: ["3000:3000"]
+    restart: unless-stopped
+volumes:
+  dbdata:

@@ -1,0 +1,1 @@
+{ "name": "Monopoli Indonesia", "short_name": "Monopoli ID", "start_url": "/", "display": "fullscreen", "orientation": "any", "background_color": "#0f1d4a", "theme_color": "#0f1d4a", "icons": [{ "src": "/favicon.svg", "sizes": "any", "type": "image/svg+xml" }] }
