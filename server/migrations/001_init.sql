@@ -518,19 +518,14 @@ BEGIN
   END LOOP;
 END $$;
 
--- Fungsi auth.uid() hanya ada di Supabase; kebijakan dibuat kondisional.
+-- Di Supabase: baca publik hanya untuk katalog & papan (tanpa data pribadi). Tabel lain tertutup total
+-- untuk anon/authenticated; seluruh akses data lewat server game.
 DO $$
 BEGIN
-  IF EXISTS (SELECT 1 FROM pg_namespace WHERE nspname = 'auth') AND EXISTS (SELECT 1 FROM pg_roles WHERE rolname = 'authenticated') THEN
-    EXECUTE 'DROP POLICY IF EXISTS own_profile_read ON player_profiles';
-    EXECUTE 'CREATE POLICY own_profile_read ON player_profiles FOR SELECT TO authenticated USING (user_id IN (SELECT id FROM users WHERE supabase_uid = auth.uid()))';
-    EXECUTE 'DROP POLICY IF EXISTS own_wallet_read ON player_wallets';
-    EXECUTE 'CREATE POLICY own_wallet_read ON player_wallets FOR SELECT TO authenticated USING (user_id IN (SELECT id FROM users WHERE supabase_uid = auth.uid()))';
+  IF EXISTS (SELECT 1 FROM pg_roles WHERE rolname = 'anon') AND EXISTS (SELECT 1 FROM pg_roles WHERE rolname = 'authenticated') THEN
     EXECUTE 'DROP POLICY IF EXISTS catalog_read_chars ON characters';
     EXECUTE 'CREATE POLICY catalog_read_chars ON characters FOR SELECT TO anon, authenticated USING (active)';
     EXECUTE 'DROP POLICY IF EXISTS catalog_read_props ON properties';
     EXECUTE 'CREATE POLICY catalog_read_props ON properties FOR SELECT TO anon, authenticated USING (true)';
-    EXECUTE 'DROP POLICY IF EXISTS lb_read ON leaderboard_entries';
-    EXECUTE 'CREATE POLICY lb_read ON leaderboard_entries FOR SELECT TO anon, authenticated USING (true)';
   END IF;
 END $$;

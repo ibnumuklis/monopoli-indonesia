@@ -10,6 +10,7 @@ const dir = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '..
 export async function migrate({ log = console.log } = {}) {
   await initDb();
   await db().exec(`CREATE TABLE IF NOT EXISTS schema_migrations (name text PRIMARY KEY, applied_at timestamptz NOT NULL DEFAULT now())`);
+  await db().exec(`ALTER TABLE schema_migrations ENABLE ROW LEVEL SECURITY`);
   const done = new Set((await db().query('SELECT name FROM schema_migrations')).rows.map((r) => r.name));
   for (const f of fs.readdirSync(dir).filter((x) => x.endsWith('.sql')).sort()) {
     if (done.has(f)) continue;
