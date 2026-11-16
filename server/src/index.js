@@ -21,7 +21,8 @@ export async function createServer({ port = config.port, silent = false } = {}) 
   await initDb();
   await migrate({ log });
   await loadContentOverrides();
-  await ensureSuperAdmin();
+  try { await ensureSuperAdmin(); }
+  catch (e) { console.error('[admin] akun admin gagal dibuat — ADMIN_USERNAME hanya boleh huruf, angka, _ atau . (3-20 karakter):', e.message); }
 
   const app = express();
   if (config.trustProxy) app.set('trust proxy', 1);
