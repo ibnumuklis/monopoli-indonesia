@@ -18,6 +18,7 @@ RUN npm ci --omit=dev --ignore-scripts
 COPY shared ./shared
 COPY server ./server
 COPY --from=client /app/client/dist ./client/dist
+RUN mkdir -p /app/.data && chown -R node:node /app/.data
 USER node
 EXPOSE 3000
 HEALTHCHECK --interval=30s --timeout=5s CMD wget -qO- http://localhost:3000/health || exit 1
